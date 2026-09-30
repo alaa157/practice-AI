@@ -19,6 +19,11 @@ if CHUNK_OVERLAP < 0 or CHUNK_OVERLAP >= CHUNK_SIZE:
 # by the embedding model, so raise CHUNK_SIZE only with a longer-context model.
 # Cosine distance; matches are omitted when the nearest result is farther away.
 MAX_COSINE_DISTANCE = 0.65
+# Separate cutoff for figure-description records: embedding similarity does
+# not behave equally across prose and generated captions (plan §Phase 4.6).
+FIGURE_MAX_COSINE_DISTANCE = float(os.environ.get("STUDY_RAG_FIGURE_CUTOFF", str(MAX_COSINE_DISTANCE)))
+# Candidate over-fetch multiplier before page grouping (plan §Phase 4.2).
+RETRIEVAL_CANDIDATE_MULT = int(os.environ.get("STUDY_RAG_CANDIDATE_MULT", "3"))
 
 # Index record layout version. Ingest refuses to mix schemas: collections
 # stamped with another version require `ingest.py --reset` (full rebuild).

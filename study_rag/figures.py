@@ -26,7 +26,7 @@ from pathlib import Path
 
 from models import ParsedDocument
 
-FIGURE_PROMPT_VERSION = "figdesc-v1"
+FIGURE_PROMPT_VERSION = "figdesc-v2"
 FIGURE_PROMPT = (
     "Describe ONLY what is visibly printed in this diagram: figure type and topic, "
     "title, legible labels, entities and their relationships, and arrow directions. "
@@ -172,12 +172,20 @@ def discover_figure_images(
 
 def _register_asset(manifest, outdir, artifact_dir, doc, page_no, kind, png, bbox=None, captions=None) -> FigureAsset:
     sha = _sha(png)
-    asset_id = f"{doc.document_id}-{sha[:8]}"
+    bbox_key = "page" if bbox is None else "-".join(f"{coord:.1f}".replace(".", "_") for coord in bbox)
+    asset_id = f"{doc.document_id}-p{page_no}-{bbox_key}-{sha[:8]}"
     rel = (outdir / f"{asset_id}.png").relative_to(artifact_dir).as_posix()
     (outdir / f"{asset_id}.png").write_bytes(png)
     entry = manifest.get(asset_id, {})
     if entry.get("image_sha") != sha:
         entry = {"image_sha": sha, "ocr_labels": None, "description": None}
+    entry.update({
+        "source": doc.source,
+        "page": page_no,
+        "bbox": list(bbox) if bbox is not None else None,
+        "kind": kind,
+        "caption_extracted": " ".join(captions or []),
+    })
     manifest[asset_id] = entry
     return FigureAsset(asset_id, doc.source, page_no, kind, rel, sha, bbox,
                        caption_extracted=" ".join(captions or []))
@@ -206,7 +214,12 @@ def fill_ocr_labels(assets: list[FigureAsset], artifact_dir: Path, doc_id: str, 
         _save_manifest(doc_id, artifact_dir, manifest)
 
 
-def generate_description(image_path: Path, model_id: str = VLM_MODEL_ID, max_tokens: int = 150) -> tuple[str, str]:
+def generate_description(
+    image_path: Path,
+    context: str = "",
+    model_id: str = VLM_MODEL_ID,
+    max_tokens: int = 150,
+) -> tuple[str, str]:
     """Local VLM description of one figure. Returns (text, describer_id).
 
     Raises RuntimeError when the model cannot run — callers treat VLM as
@@ -226,7 +239,14 @@ def generate_description(image_path: Path, model_id: str = VLM_MODEL_ID, max_tok
             _vlm = (proc, model)
         proc, model = _vlm
         img = Image.open(image_path).convert("RGB")
-        conv = [{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": FIGURE_PROMPT}]}]
+        prompt = FIGURE_PROMPT
+        if context.strip():
+            prompt += (
+                "\nNearby extracted source text (context only; it is not visual evidence):\n"
+                + context.strip()
+                + "\nUse this only to clarify the topic or terminology. Describe only details visible in the image."
+            )
+        conv = [{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": prompt}]}]
         inputs = proc(text=proc.apply_chat_template(conv, add_generation_prompt=True), images=[img], return_tensors="pt")
         out = model.generate(**inputs, max_new_tokens=max_tokens, do_sample=False)
         text = proc.batch_decode(out, skip_special_tokens=True)[0].split("Assistant:")[-1].strip()
@@ -279,7 +299,13 @@ def build_figure_records(
                 asset.describer = entry["describer"]
             else:
                 try:
-                    asset.description, asset.describer = generate_description(artifact_dir / asset.image_path)
+                    heading, page_text = nearby_context(doc, asset.page)
+                    source_context = "\n".join(
+                        part for part in (heading, asset.caption_extracted, page_text[:1000]) if part
+                    )
+                    asset.description, asset.describer = generate_description(
+                        artifact_dir / asset.image_path, context=source_context
+                    )
                     entry.update({"image_sha": asset.image_sha, "description": asset.description,
                                   "describer": asset.describer, "prompt_version": cfg.prompt_version})
                     manifest[asset.asset_id] = entry

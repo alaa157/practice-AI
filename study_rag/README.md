@@ -6,7 +6,8 @@ Retrieval over your PDFs/slides, queried via MCP (`study_search`).
 
 1. **Your files** — drop PDFs / `.txt` / `.md` into `study_rag/data/raw/`.
    `.pptx`/`.docx` are skipped for now (export to PDF first). Subfolders are scanned recursively.
-   Scanned PDFs with no text layer are reported as "no extractable text" (needs OCR — tell me if you hit this).
+   Scanned PDFs need `STUDY_RAG_OCR=1` (Docling + RapidOCR backend) for page text;
+   printed figure labels are OCR'd during figure indexing regardless.
 2. **Defaults:** `all-MiniLM-L6-v2` embeddings, Chroma persistent DB in
    `study_rag/chroma_db/`. Chunking is page-aware (Phase 2): a chunk never
    spans pages, headings travel with their content, tables become dedicated
@@ -64,12 +65,44 @@ python ingest.py --reset && python eval/baseline.py
 
 Results and analysis: `eval/baseline_results.json`, `eval/BASELINE.md`.
 
-## MCP (what you chose)
+## Figures (Phase 3)
+
+PDF figures are exported to `artifacts/<document_id>/figures/` (git-ignored)
+and indexed as `figure_description` records with source, page, asset ID, and
+provenance. Captions and RapidOCR printed labels are stored as extracted
+evidence; model descriptions (opt-in `STUDY_RAG_FIGURE_DESCRIBER=smolvlm2`)
+are labeled GENERATED in records and in retrieval output. Pages with captions
+but no isolatable figures fall back to whole-page image assets. Re-ingest
+skips unchanged figures via the `figures.json` manifest. Flags:
+`STUDY_RAG_FIGURES=0` disables figure indexing. VLM decision log:
+`eval/VISION_EVALUATION.md`.
+
+## Retrieval (Phase 4)
+
+One embedding search covers text + figure records (`retrieval.search_evidence`,
+shared by `query.py` and `server.py`). Candidates are grouped by source/page/
+asset so overlapping chunks don't crowd out other evidence; each bundle cites
+source + page range, states its content type (source text vs extracted/
+GENERATED figure description), and labels cosine distance as a retrieval
+signal, never confidence. Cutoffs are per-kind and configurable
+(`STUDY_RAG_FIGURE_CUTOFF`, default 0.65); weak retrieval reports "no
+sufficiently close evidence" with per-kind closest distances.
 
 `study_rag/server.py` (stdio, FastMCP `study_mcp`) exposes:
-- `study_search` (query, top_k) — cited chunks
+- `study_search` (query, top_k) — grouped evidence bundles
+- `study_inspect_asset` (asset_id) — figure/page-image metadata + image
+  content for vision-capable clients (local path included for same-machine
+  use; unknown IDs get a clear error listing known IDs)
 - `study_list_sources` — files + chunk counts
 - `study_ingest_status` — chunk count / db path / model
 
-Wire into Codex/Copilot/Claude as a local stdio MCP server with command
-`python /workspaces/practice-AI/study_rag/server.py`.
+A vision-capable agent answers diagram questions by calling `study_search`,
+then `study_inspect_asset`, then answering with citations to the source page —
+retrieval and answering stay separate steps.
+
+## MCP tools
+
+`study_rag/server.py` (stdio, FastMCP `study_mcp`, command
+`python /workspaces/practice-AI/study_rag/server.py`) exposes the four tools
+listed above: `study_search`, `study_inspect_asset`, `study_list_sources`,
+`study_ingest_status`.

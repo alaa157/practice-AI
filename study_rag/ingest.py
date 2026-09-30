@@ -90,9 +90,12 @@ def main() -> int:
         if bare_pages:
             print(f"  [note] {source}: pages without text: {bare_pages}")
         if not doc.text_blocks:
-            print(f"  [keep] {source}: no indexable text (prior records, if any, kept)")
-            empty_kept.append(source)
-            continue
+            if ENABLE_FIGURE_INDEX and suffix == ".pdf":
+                print(f"  [note] {source}: no text blocks; continuing to figure indexing")
+            else:
+                print(f"  [keep] {source}: no indexable text (prior records, if any, kept)")
+                empty_kept.append(source)
+                continue
         parsed.append((source, doc))
 
     # Phase B: open collection, enforce schema/model compatibility.
@@ -116,12 +119,9 @@ def main() -> int:
     # below covers text and figure records together.
     new_ids: set[str] = set()
     total_chunks = 0
+    preserved_figure_ids: set[str] = set()
     for source, doc in parsed:
         chunks = build_text_chunks(doc, CHUNK_SIZE, CHUNK_OVERLAP)
-        if not chunks:  # e.g. figures-only document; treat like empty
-            print(f"  [keep] {source}: blocks produced no text chunks (prior records kept)")
-            empty_kept.append(source)
-            continue
         ids, documents, metas = [], [], []
         for idx, chunk in enumerate(chunks):
             cid = f"{doc.document_id}:t{idx:04d}"
@@ -142,6 +142,7 @@ def main() -> int:
                 "content_hash": _content_hash(chunk.text),
             })
         fig_records: list[tuple[str, dict]] = []
+        figure_index_failed = False
         if ENABLE_FIGURE_INDEX and doc.source.lower().endswith(".pdf"):
             from figures import FigureBuildConfig, build_figure_records
 
@@ -155,14 +156,26 @@ def main() -> int:
             except Exception as e:
                 # Figure failures must not break text indexing for this source.
                 print(f"  [warn] {source}: figure indexing failed ({type(e).__name__}: {e}); text kept")
+                figure_index_failed = True
+        if not chunks and not fig_records and not figure_index_failed:
+            print(f"  [keep] {source}: no indexable text or figure records (prior records kept)")
+            empty_kept.append(source)
+            continue
         for text, meta in fig_records:
             ids.append(meta["chunk_id"])
             documents.append(text)
             metas.append(meta)
         for j in range(0, len(ids), 64):
             col.upsert(ids=ids[j : j + 64], documents=documents[j : j + 64], metadatas=metas[j : j + 64])
-        prior = col.get(where={"source": source}, include=[])
-        obsolete = sorted(set(prior.get("ids", [])) - set(ids))
+        prior = col.get(where={"source": source}, include=["metadatas"])
+        prior_ids = prior.get("ids", [])
+        if figure_index_failed:
+            preserved_figure_ids.update(
+                record_id
+                for record_id, meta in zip(prior_ids, prior.get("metadatas", []))
+                if not chunks or (meta and meta.get("content_kind") == "figure_description")
+            )
+        obsolete = sorted(set(prior_ids) - set(ids) - preserved_figure_ids)
         if obsolete:
             col.delete(ids=obsolete)
         new_ids.update(ids)
@@ -179,7 +192,7 @@ def main() -> int:
         for source in set(empty_kept) | {source for source, _ in skipped}:
             prior = col.get(where={"source": source}, include=[])
             retained_ids.update(prior.get("ids", []))
-        stale = sorted(set(current.get("ids", [])) - new_ids - retained_ids)
+        stale = sorted(set(current.get("ids", [])) - new_ids - retained_ids - preserved_figure_ids)
         if stale:
             col.delete(ids=stale)
             print(f"  [reset] removed {len(stale)} stale records")

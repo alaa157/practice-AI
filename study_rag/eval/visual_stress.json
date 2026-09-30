@@ -1,0 +1,20 @@
+[
+  {
+    "id": "v1-shape",
+    "category": "vision-only",
+    "query": "What shape is drawn for the mitochondrion outline in Figure 3?",
+    "note": "Answer (ellipse) exists only in pixels. No caption, label, or text states it."
+  },
+  {
+    "id": "v2-spatial",
+    "category": "vision-only",
+    "query": "On which side of the Figure 3 diagram are the labels placed?",
+    "note": "Answer (right side) exists only in pixels."
+  },
+  {
+    "id": "v3-shape",
+    "category": "vision-only",
+    "query": "Is the nucleus drawn as a circle in the Figure 1 cell diagram?",
+    "note": "Answer (yes) exists only in vector shapes; the caption lists labels, not shapes."
+  }
+]

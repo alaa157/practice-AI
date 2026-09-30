@@ -1,4 +1,4 @@
-# Phase 0 baseline with Phase 2–3 follow-ups
+# Baseline with Phase 2–5 follow-ups
 
 The first table below records the Phase 0 baseline captured before parser and
 chunking changes. Reproduce current results with
@@ -63,6 +63,32 @@ the openable PNG. Shortcoming 3 is closed for labeled figures; caption-less
 vector drawings (p3 flowchart shapes) remain discoverable only through
 captions/page text. q6 still MISSes (scanned text needs the Phase 1 OCR flag).
 
+## Phase 4 re-run note (superseded — see wrap-up below)
+
+On the grouped path (`retrieval.search_evidence`, top-4 bundles): 7 HIT /
+1 MISS / 1 PASS — verdicts unchanged, so grouping loses nothing here, and
+q3's two p2 text chunks now fold into one bundle. Figure records score
+competitively on diagram questions (q5 figure 0.311 < text 0.335; q9 figure
+0.308 < text 0.325), earning their index place.
+
+Cutoff check (plan §Phase 4.6): correct-kind closest distances are text
+0.25–0.45, figure 0.31–0.49 — comfortable margin under 0.65. Wrong-kind
+nearest (q1 figure 0.650) sits just above the line and is correctly excluded;
+no-answer (0.91/1.03) and scanned (0.85/0.91) have wide margins. Both cutoffs
+stay at 0.65, separately configurable (`STUDY_RAG_FIGURE_CUTOFF`); per-kind
+closest distances are now recorded in every baseline run for future tuning.
+
+## Phase 5 note (decision: defer — failure analysis superseded, verdict stands)
+
+Failure analysis at decision time showed zero visual-caused misses on study-meaningful
+questions (the one MISS is the OCR-flag gap). Vision-only stress probes
+(`eval/visual_stress.json`, unscored) confirm the boundary: shape/position
+trivia routes to the right page but isn't answerable from text — covered
+instead by `study_inspect_asset` pixels. ColQwen2-2B (no ColSmol in
+colpali-engine 0.3.18) OOM'd this 7.8 GB box at 87% weight-load after an
+8 GB download: adopted nothing, added no dependency. Full analysis, probe
+numbers, comparison table, and reopen triggers: `eval/PHASE5_DECISION.md`.
+
 ## Practical constraints
 
 - Machine: 2 CPU, 7.8 GB RAM, no GPU (torch CPU). Full `--reset` ingest of this
@@ -75,3 +101,19 @@ captions/page text. q6 still MISSes (scanned text needs the Phase 1 OCR flag).
   details the OCR reads correctly) — see `eval/VISION_EVALUATION.md`. VLM
   descriptions stay opt-in (`STUDY_RAG_FIGURE_DESCRIBER`); default is extracted
   captions + OCR labels. No remote model is ever called.
+- Disk: 32 GB overlay at ~84% — model downloads over ~4 GB need an `HF_HOME`
+  redirect to `/tmp` (37 GB free there). Large visual models are not storable
+  on the default cache path.
+
+## Wrap-up re-run note (2026-09-30, current tree)
+
+`python ingest.py --reset && python eval/baseline.py` (top-4 bundles,
+11 records) now scores **8 HIT / 0 MISS / 1 PASS** — the checked-in
+`baseline_results.json` records this run. The change vs the 7/1/1 notes
+above: q6 (scanned pond-water notes) now HITs at d≈0.28 via a
+`figure_description` record. `ingest.py` no longer skips text-less PDFs
+when figure indexing is enabled — the scanned pages export as page-image
+assets and RapidOCR labels ("volvox", etc.) become indexable extracted
+evidence. No `STUDY_RAG_OCR` flag was set. Shortcoming 4 (silently absent
+scans) is therefore closed for labeled scans; fully handwritten/unlabeled
+scans still need the Phase 1 OCR flag for page text.
