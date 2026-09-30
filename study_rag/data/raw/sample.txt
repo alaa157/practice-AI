@@ -1,0 +1,12 @@
+# Sample note (test the pipeline before your real PDFs arrive)
+
+## Photosynthesis (Biology 101)
+
+Photosynthesis converts light energy into chemical energy in chloroplasts.
+Two stages: light-dependent reactions (thylakoid membranes, produce ATP and NADPH)
+and the Calvin cycle (stroma, fixes CO2 into glucose).
+
+## Mitosis phases
+
+Prophase, metaphase, anaphase, telophase. In metaphase chromosomes align at the
+cell equator; in anaphase sister chromatids separate toward opposite poles.

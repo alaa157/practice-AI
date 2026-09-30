@@ -1,0 +1,368 @@
+{
+  "meta": {
+    "timestamp": "2026-09-30T04:59:24.700334+00:00",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "max_cosine_distance": 0.65,
+    "top_k": 6,
+    "chunks_indexed": 9,
+    "phase": 0
+  },
+  "results": [
+    {
+      "id": "q1-text-photosynthesis",
+      "category": "text",
+      "query": "What are the two stages of photosynthesis?",
+      "acceptable": [
+        {
+          "source": "sample.txt"
+        }
+      ],
+      "verdict": "HIT",
+      "hits": [
+        {
+          "source": "sample.txt",
+          "page_start": 1,
+          "page_end": 1,
+          "chunk": 0,
+          "distance": 0.274,
+          "excerpt": "# Sample note (test the pipeline before your real PDFs arrive) ## Photosynthesis (Biology 101) Photosynthesis converts light energy into chemical energy in chloroplasts. Two stages: light-dependent reactions (thylakoid membranes, produce ATP and NADPH) and the Calvin cycle (stroma, fixes CO2 into gl"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 2,
+          "page_end": 2,
+          "chunk": 1,
+          "distance": 0.5496,
+          "excerpt": "Cell Organelles\nTable (p2):\nOrganelle | Function\nNucleus | Stores DNA and controls the cell\nMitochondrion | Produces ATP through cellular respiration\nRibosome | Builds proteins from amino acids\nChloroplast | Captures light for photosynthesis\nCell membrane | Controls what enters and leaves the cell"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 3,
+          "page_end": 3,
+          "chunk": 3,
+          "distance": 0.6032,
+          "excerpt": "Cell Diagrams\n\nFigure 1: Animal cell diagram. Labeled parts: nucleus, mitochondria, ribosome, and cell membrane.\n\nFigure 2: Stages of mitosis in order. The flowchart reads: Prophase, then Metaphase, thenAnaphase, then Telophase."
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 1,
+          "page_end": 1,
+          "chunk": 0,
+          "distance": 0.6137,
+          "excerpt": "Protein Synthesis\n\nProtein synthesis has two stages. Transcription occurs in the nucleus, where the DNA sequence ofa gene is copied into messenger RNA (mRNA). The mRNA then leaves the nucleus through anuclear pore.\n\nTranslation takes place at the ribosome. Transfer RNA (tRNA) molecules deliver amino"
+        }
+      ]
+    },
+    {
+      "id": "q2-text-transcription",
+      "category": "text",
+      "query": "Where does transcription occur and what does it produce?",
+      "acceptable": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page": 1
+        }
+      ],
+      "verdict": "HIT",
+      "hits": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 1,
+          "page_end": 1,
+          "chunk": 0,
+          "distance": 0.3507,
+          "excerpt": "Protein Synthesis\n\nProtein synthesis has two stages. Transcription occurs in the nucleus, where the DNA sequence ofa gene is copied into messenger RNA (mRNA). The mRNA then leaves the nucleus through anuclear pore.\n\nTranslation takes place at the ribosome. Transfer RNA (tRNA) molecules deliver amino"
+        },
+        {
+          "source": "sample.txt",
+          "page_start": 1,
+          "page_end": 1,
+          "chunk": 0,
+          "distance": 0.6414,
+          "excerpt": "# Sample note (test the pipeline before your real PDFs arrive) ## Photosynthesis (Biology 101) Photosynthesis converts light energy into chemical energy in chloroplasts. Two stages: light-dependent reactions (thylakoid membranes, produce ATP and NADPH) and the Calvin cycle (stroma, fixes CO2 into gl"
+        }
+      ]
+    },
+    {
+      "id": "q3-table-atp",
+      "category": "table",
+      "query": "Which organelle produces ATP?",
+      "acceptable": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page": 2
+        }
+      ],
+      "verdict": "HIT",
+      "hits": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 2,
+          "page_end": 2,
+          "chunk": 1,
+          "distance": 0.4516,
+          "excerpt": "Cell Organelles\nTable (p2):\nOrganelle | Function\nNucleus | Stores DNA and controls the cell\nMitochondrion | Produces ATP through cellular respiration\nRibosome | Builds proteins from amino acids\nChloroplast | Captures light for photosynthesis\nCell membrane | Controls what enters and leaves the cell"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 4,
+          "page_end": 4,
+          "chunk": 1,
+          "distance": 0.4888,
+          "excerpt": "[Figure (figure) from biology/cell_biology.pdf p4]\nCaption (extracted, not generated): Figure 3: Mitochondrion structure (see diagram).\nPrinted labels (OCR via rapidocr, extracted, not generated): Mitochondrion, outer membrane, inner membrane, cristae, matrix\nNearby page context: Mitochondrion Figur"
+        },
+        {
+          "source": "sample.txt",
+          "page_start": 1,
+          "page_end": 1,
+          "chunk": 0,
+          "distance": 0.5114,
+          "excerpt": "# Sample note (test the pipeline before your real PDFs arrive) ## Photosynthesis (Biology 101) Photosynthesis converts light energy into chemical energy in chloroplasts. Two stages: light-dependent reactions (thylakoid membranes, produce ATP and NADPH) and the Calvin cycle (stroma, fixes CO2 into gl"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 4,
+          "page_end": 4,
+          "chunk": 4,
+          "distance": 0.525,
+          "excerpt": "Cell Diagrams\n\nMitochondrion Figure\n\nFigure 3: Mitochondrion structure (see diagram)."
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 2,
+          "page_end": 2,
+          "chunk": 2,
+          "distance": 0.5324,
+          "excerpt": "Cell Organelles\n\nTable 1 lists the main organelles and their functions."
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 3,
+          "page_end": 3,
+          "chunk": 0,
+          "distance": 0.5841,
+          "excerpt": "[Figure (page_image) from biology/cell_biology.pdf p3]\nCaption (extracted, not generated): Figure 1: Animal cell diagram. Labeled parts: nucleus, mitochondria, ribosome, and cell membrane. Figure 2: Stages of mitosis in order. The flowchart reads: Prophase, then Metaphase, thenAnaphase, then Telopha"
+        }
+      ]
+    },
+    {
+      "id": "q4-diagram-labels",
+      "category": "diagram-labels",
+      "query": "Which parts are labeled in the animal cell diagram?",
+      "acceptable": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page": 3
+        }
+      ],
+      "verdict": "HIT",
+      "hits": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 3,
+          "page_end": 3,
+          "chunk": 3,
+          "distance": 0.2609,
+          "excerpt": "Cell Diagrams\n\nFigure 1: Animal cell diagram. Labeled parts: nucleus, mitochondria, ribosome, and cell membrane.\n\nFigure 2: Stages of mitosis in order. The flowchart reads: Prophase, then Metaphase, thenAnaphase, then Telophase."
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 3,
+          "page_end": 3,
+          "chunk": 0,
+          "distance": 0.4103,
+          "excerpt": "[Figure (page_image) from biology/cell_biology.pdf p3]\nCaption (extracted, not generated): Figure 1: Animal cell diagram. Labeled parts: nucleus, mitochondria, ribosome, and cell membrane. Figure 2: Stages of mitosis in order. The flowchart reads: Prophase, then Metaphase, thenAnaphase, then Telopha"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 4,
+          "page_end": 4,
+          "chunk": 4,
+          "distance": 0.4201,
+          "excerpt": "Cell Diagrams\n\nMitochondrion Figure\n\nFigure 3: Mitochondrion structure (see diagram)."
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 4,
+          "page_end": 4,
+          "chunk": 1,
+          "distance": 0.4423,
+          "excerpt": "[Figure (figure) from biology/cell_biology.pdf p4]\nCaption (extracted, not generated): Figure 3: Mitochondrion structure (see diagram).\nPrinted labels (OCR via rapidocr, extracted, not generated): Mitochondrion, outer membrane, inner membrane, cristae, matrix\nNearby page context: Mitochondrion Figur"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 2,
+          "page_end": 2,
+          "chunk": 2,
+          "distance": 0.517,
+          "excerpt": "Cell Organelles\n\nTable 1 lists the main organelles and their functions."
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 2,
+          "page_end": 2,
+          "chunk": 1,
+          "distance": 0.5789,
+          "excerpt": "Cell Organelles\nTable (p2):\nOrganelle | Function\nNucleus | Stores DNA and controls the cell\nMitochondrion | Produces ATP through cellular respiration\nRibosome | Builds proteins from amino acids\nChloroplast | Captures light for photosynthesis\nCell membrane | Controls what enters and leaves the cell"
+        }
+      ]
+    },
+    {
+      "id": "q5-diagram-relation",
+      "category": "diagram-relation",
+      "query": "In the mitosis flowchart, which stage comes directly after metaphase?",
+      "acceptable": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page": 3
+        }
+      ],
+      "verdict": "HIT",
+      "hits": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 3,
+          "page_end": 3,
+          "chunk": 0,
+          "distance": 0.3108,
+          "excerpt": "[Figure (page_image) from biology/cell_biology.pdf p3]\nCaption (extracted, not generated): Figure 1: Animal cell diagram. Labeled parts: nucleus, mitochondria, ribosome, and cell membrane. Figure 2: Stages of mitosis in order. The flowchart reads: Prophase, then Metaphase, thenAnaphase, then Telopha"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 3,
+          "page_end": 3,
+          "chunk": 3,
+          "distance": 0.3348,
+          "excerpt": "Cell Diagrams\n\nFigure 1: Animal cell diagram. Labeled parts: nucleus, mitochondria, ribosome, and cell membrane.\n\nFigure 2: Stages of mitosis in order. The flowchart reads: Prophase, then Metaphase, thenAnaphase, then Telophase."
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 4,
+          "page_end": 4,
+          "chunk": 4,
+          "distance": 0.5825,
+          "excerpt": "Cell Diagrams\n\nMitochondrion Figure\n\nFigure 3: Mitochondrion structure (see diagram)."
+        },
+        {
+          "source": "sample.txt",
+          "page_start": 1,
+          "page_end": 1,
+          "chunk": 0,
+          "distance": 0.586,
+          "excerpt": "# Sample note (test the pipeline before your real PDFs arrive) ## Photosynthesis (Biology 101) Photosynthesis converts light energy into chemical energy in chloroplasts. Two stages: light-dependent reactions (thylakoid membranes, produce ATP and NADPH) and the Calvin cycle (stroma, fixes CO2 into gl"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 4,
+          "page_end": 4,
+          "chunk": 1,
+          "distance": 0.6202,
+          "excerpt": "[Figure (figure) from biology/cell_biology.pdf p4]\nCaption (extracted, not generated): Figure 3: Mitochondrion structure (see diagram).\nPrinted labels (OCR via rapidocr, extracted, not generated): Mitochondrion, outer membrane, inner membrane, cristae, matrix\nNearby page context: Mitochondrion Figur"
+        }
+      ]
+    },
+    {
+      "id": "q6-scanned-volvox",
+      "category": "scanned",
+      "query": "What did the pond water sample contain?",
+      "acceptable": [
+        {
+          "source": "biology/field_notes_scanned.pdf"
+        }
+      ],
+      "verdict": "MISS",
+      "hits": []
+    },
+    {
+      "id": "q7-markdown-zeroth",
+      "category": "text",
+      "query": "What does the zeroth law of thermodynamics define?",
+      "acceptable": [
+        {
+          "source": "physics/thermodynamics.md"
+        }
+      ],
+      "verdict": "HIT",
+      "hits": [
+        {
+          "source": "physics/thermodynamics.md",
+          "page_start": 1,
+          "page_end": 1,
+          "chunk": 0,
+          "distance": 0.2469,
+          "excerpt": "# Thermodynamics (Physics 201) The zeroth law of thermodynamics defines thermal equilibrium and temperature: if two systems are each in equilibrium with a third, they are in equilibrium with each other. The first law is conservation of energy: heat added to a system equals the change in internal ene"
+        }
+      ]
+    },
+    {
+      "id": "q8-no-answer",
+      "category": "no-answer",
+      "query": "In what year did the War of the Roses end?",
+      "acceptable": [],
+      "verdict": "PASS",
+      "hits": []
+    },
+    {
+      "id": "q9-figure-image-labels",
+      "category": "diagram-labels",
+      "query": "In the mitochondrion diagram, what are the folds of the inner membrane called?",
+      "acceptable": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page": 4
+        }
+      ],
+      "verdict": "HIT",
+      "hits": [
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 4,
+          "page_end": 4,
+          "chunk": 1,
+          "distance": 0.3084,
+          "excerpt": "[Figure (figure) from biology/cell_biology.pdf p4]\nCaption (extracted, not generated): Figure 3: Mitochondrion structure (see diagram).\nPrinted labels (OCR via rapidocr, extracted, not generated): Mitochondrion, outer membrane, inner membrane, cristae, matrix\nNearby page context: Mitochondrion Figur"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 4,
+          "page_end": 4,
+          "chunk": 4,
+          "distance": 0.3253,
+          "excerpt": "Cell Diagrams\n\nMitochondrion Figure\n\nFigure 3: Mitochondrion structure (see diagram)."
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 3,
+          "page_end": 3,
+          "chunk": 3,
+          "distance": 0.411,
+          "excerpt": "Cell Diagrams\n\nFigure 1: Animal cell diagram. Labeled parts: nucleus, mitochondria, ribosome, and cell membrane.\n\nFigure 2: Stages of mitosis in order. The flowchart reads: Prophase, then Metaphase, thenAnaphase, then Telophase."
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 3,
+          "page_end": 3,
+          "chunk": 0,
+          "distance": 0.4578,
+          "excerpt": "[Figure (page_image) from biology/cell_biology.pdf p3]\nCaption (extracted, not generated): Figure 1: Animal cell diagram. Labeled parts: nucleus, mitochondria, ribosome, and cell membrane. Figure 2: Stages of mitosis in order. The flowchart reads: Prophase, then Metaphase, thenAnaphase, then Telopha"
+        },
+        {
+          "source": "biology/cell_biology.pdf",
+          "page_start": 2,
+          "page_end": 2,
+          "chunk": 1,
+          "distance": 0.5661,
+          "excerpt": "Cell Organelles\nTable (p2):\nOrganelle | Function\nNucleus | Stores DNA and controls the cell\nMitochondrion | Produces ATP through cellular respiration\nRibosome | Builds proteins from amino acids\nChloroplast | Captures light for photosynthesis\nCell membrane | Controls what enters and leaves the cell"
+        },
+        {
+          "source": "sample.txt",
+          "page_start": 1,
+          "page_end": 1,
+          "chunk": 0,
+          "distance": 0.5802,
+          "excerpt": "# Sample note (test the pipeline before your real PDFs arrive) ## Photosynthesis (Biology 101) Photosynthesis converts light energy into chemical energy in chloroplasts. Two stages: light-dependent reactions (thylakoid membranes, produce ATP and NADPH) and the Calvin cycle (stroma, fixes CO2 into gl"
+        }
+      ]
+    }
+  ]
+}

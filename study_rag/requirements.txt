@@ -1,0 +1,17 @@
+sentence-transformers>=3.0.0
+chromadb>=0.5.0
+pypdf>=4.0.0
+pymupdf>=1.28
+mcp<2  # server.py uses the v1 FastMCP API (mcp.server.fastmcp)
+
+# Optional: docling backend for document_parser.py + OCR for scanned pages.
+# Install with: pip install docling opencv-python-headless
+# (docling pulls opencv-python, which needs system libGL; the -headless
+# build avoids that. ~1 GB models download on first use, needs network.)
+# docling>=2.130
+
+# Optional: local VLM figure descriptions (STUDY_RAG_FIGURE_DESCRIBER=smolvlm2).
+# Needs: pip install num2words ; model weights (~500 MB) download on first use.
+# Default describer is "extracted" (no extra deps: captions + RapidOCR labels).
+
+# Eval-only (corpus generator): reportlab, pillow. Not needed at runtime.

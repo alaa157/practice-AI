@@ -1,0 +1,65 @@
+[
+  {
+    "id": "q1-text-photosynthesis",
+    "category": "text",
+    "query": "What are the two stages of photosynthesis?",
+    "acceptable": [{"source": "sample.txt"}],
+    "note": "Paragraph answer in plain text file."
+  },
+  {
+    "id": "q2-text-transcription",
+    "category": "text",
+    "query": "Where does transcription occur and what does it produce?",
+    "acceptable": [{"source": "biology/cell_biology.pdf", "page": 1}],
+    "note": "Answer spans one sentence on page 1."
+  },
+  {
+    "id": "q3-table-atp",
+    "category": "table",
+    "query": "Which organelle produces ATP?",
+    "acceptable": [{"source": "biology/cell_biology.pdf", "page": 2}],
+    "note": "Answer is one row of Table 1; tests whether table rows survive flattening."
+  },
+  {
+    "id": "q4-diagram-labels",
+    "category": "diagram-labels",
+    "query": "Which parts are labeled in the animal cell diagram?",
+    "acceptable": [{"source": "biology/cell_biology.pdf", "page": 3}],
+    "note": "Labels exist as caption text; vector shapes carry no extractable labels."
+  },
+  {
+    "id": "q5-diagram-relation",
+    "category": "diagram-relation",
+    "query": "In the mitosis flowchart, which stage comes directly after metaphase?",
+    "acceptable": [{"source": "biology/cell_biology.pdf", "page": 3}],
+    "note": "Requires arrow order Prophase->Metaphase->Anaphase->Telophase. sample.txt lists the phases in order too, so a sample.txt hit is informative but not the diagram evidence."
+  },
+  {
+    "id": "q6-scanned-volvox",
+    "category": "scanned",
+    "query": "What did the pond water sample contain?",
+    "acceptable": [{"source": "biology/field_notes_scanned.pdf"}],
+    "note": "Image-only PDF (0 extractable chars). Expected MISS at baseline; motivates Phase 1 OCR."
+  },
+  {
+    "id": "q7-markdown-zeroth",
+    "category": "text",
+    "query": "What does the zeroth law of thermodynamics define?",
+    "acceptable": [{"source": "physics/thermodynamics.md"}],
+    "note": "Markdown control path."
+  },
+  {
+    "id": "q8-no-answer",
+    "category": "no-answer",
+    "query": "In what year did the War of the Roses end?",
+    "acceptable": [],
+    "note": "Nothing in the corpus answers this. Expect 'no sufficiently close matches'."
+  },
+  {
+    "id": "q9-figure-image-labels",
+    "category": "diagram-labels",
+    "query": "In the mitochondrion diagram, what are the folds of the inner membrane called?",
+    "acceptable": [{"source": "biology/cell_biology.pdf", "page": 4}],
+    "note": "Answer 'cristae' exists ONLY inside the raster figure (no PDF text). Requires a figure record; text-only baseline must MISS."
+  }
+]

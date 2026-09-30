@@ -1,0 +1,6 @@
+# Local runtime state: Chroma DB, parser artifacts, caches. Rebuildable via
+# ingest.py / document_parser.py; never commit.
+chroma_db/
+artifacts/
+__pycache__/
+*.pyc
