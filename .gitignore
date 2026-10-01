@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Hugging Face / ML caches
+/tmp/hf-cache/
+
+# Local runtime state (rebuildable via ingest.py)
+study_rag/chroma_db/
+study_rag/artifacts/
+study_rag/output/
+chroma_db/
+artifacts/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
